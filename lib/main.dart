@@ -5,14 +5,23 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'providers/delivery_provider.dart';
 import 'modules/delivery/delivery_home.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
   await dotenv.load(fileName: ".env");
+
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: dotenv.env['API_KEY']!,
+      authDomain: dotenv.env['AUTH_DOMAIN'],
+      projectId: dotenv.env['PROJECT_ID'],
+      storageBucket: dotenv.env['STORAGE_BUCKET'],
+      messagingSenderId: dotenv.env['MESSAGING_SENDER_ID'],
+      appId: dotenv.env['APP_ID'],
+    ),
+  );
+
   runApp(DeliveryApp());
 }
 
